@@ -1,7 +1,72 @@
 {% extends "base.html" %}
-{% block title %}{{ name }} — Резюме{% endblock %}
+{% block title %}{{ name }}{% endblock %}
 {% block content %}
-<section class="flex items-center justify-center h-screen">
-    <h1 class="text-5xl">{{ name }}</h1>
+<header class="sticky top-0 bg-gray-900 z-10 flex items-center px-6 py-2">
+  <h1 class="ml-2 text-xl font-display text-torch-purple">{{ name }}</h1>
+</header>
+
+<section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center bg-gray-900">
+  <div class="flex items-center space-x-6">
+    <div>
+      <h2 class="text-5xl font-display text-torch-purple mb-4">{{ name }}</h2>
+      <p class="text-lg text-yellow-300 max-w-xl">
+        {{ bio_text }}
+      </p>
+    </div>
+  </div>
 </section>
+
+<main class="bg-gray-800 text-yellow-300">
+  <!-- 1. Timeline -->
+  <section id="timeline" class="py-20 relative">
+    <div class="absolute left-1/2 transform -translate-x-1 bg-torch-gold w-1 h-full"></div>
+    <div class="space-y-16">
+      {% for item in timeline %}
+      <div class="flex {{ forloop.counter|divisibleby:2|yesno:'justify-start,justify-end' }}">
+        <div class="w-1/2 {{ forloop.counter|divisibleby:2|yesno:'pr-8,pl-8' }}">
+          <div class="p-6 bg-gray-900 rounded-lg relative before:absolute before:-left-3 before:top-4 before:bg-torch-gold before:w-3 before:h-3 before:rounded-full">
+            <h3 class="font-display text-2xl text-torch-purple">{{ item.year }}</h3>
+            <p>{{ item.title }}</p>
+            <p class="mt-2 text-sm text-gray-400">{{ item.description }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+    <!-- 2. Hard Skills -->
+  <section id="skills" class="py-20 px-6">
+    <h2 class="text-3xl font-display text-torch-purple text-center mb-12">Hard Skills</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      {% for skill in skills %}
+      <div class="bg-gray-900 p-4 rounded-lg flex flex-col items-center">
+        <span class="text-xl font-display text-yellow-300">{{ skill.name }}</span>
+        <span class="mt-2 text-sm text-gray-400">{{ skill.level }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+    <!-- 3. Projects -->
+  <section id="projects" class="py-20 px-6 bg-gray-900">
+    <h2 class="text-3xl font-display text-torch-gold text-center mb-12">Проекты</h2>
+    <div class="grid gap-8 lg:grid-cols-2">
+      {% for proj in projects %}
+      <div class="border-2 border-torch-gold rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+        <div class="p-6">
+          <h3 class="text-2xl font-display text-yellow-300">{{ proj.title }}</h3>
+          <p class="mt-2 text-gray-400">{{ proj.description }}</p>
+          <p class="mt-4 text-sm">Технологии: <strong>{{ proj.tech }}</strong></p>
+          <a href="{{ proj.url }}" target="_blank" class="inline-block mt-4 text-torch-purple underline">GitHub →</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+
+<footer class="py-6 bg-gray-900 text-center text-gray-500">
+  © 2025 {{ name }}
+</footer>
 {% endblock %}
